@@ -18,6 +18,7 @@ class Login extends React.Component {
   submit = e => {
     e.preventDefault();
     this.props.handleSetAuthedUser(this.state.user);
+    this.props.history.push("/");
   };
 
   render() {
