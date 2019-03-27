@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,23 +6,27 @@ import {
   Redirect,
 } from "react-router-dom";
 import { connect } from "react-redux";
+import protect from "../hocs/protect";
 
 import Navbar from "../components/Navbar";
 
 import Home from "./Home";
 import Login from "./Login";
+import classNames from "class-names";
 
 class App extends Component {
   render() {
-    const { authedUser } = this.props;
+    const { authedUser, loadingBar } = this.props;
 
     return (
-      <Router>
-        <div className="container">
+      <div
+        className={classNames("container", { invisible: loadingBar.default })}
+      >
+        <Router>
           {authedUser && <Navbar />}
 
           <Switch>
-            <Route path="/" exact component={Home} />
+            <Route path="/" exact component={protect(Home)} />
             <Route path="/login" component={Login} />
 
             <Route path="/new-question" render={() => <>New Question</>} />
@@ -34,13 +38,14 @@ class App extends Component {
 
             {!authedUser && <Redirect to="/login" />}
           </Switch>
-        </div>
-      </Router>
+        </Router>
+      </div>
     );
   }
 }
 
-const mapStateToProps = ({ authedUser }) => ({
+const mapStateToProps = ({ authedUser, loadingBar }) => ({
+  loadingBar,
   authedUser,
 });
 
