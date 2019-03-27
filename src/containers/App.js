@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -36,7 +36,7 @@ class App extends Component {
               render={() => <>Question: {this.props.match.question_id}</>}
             />
 
-            {!authedUser && <Redirect to="/login" />}
+            <Redirect from="*" to="/" />
           </Switch>
         </Router>
       </div>
