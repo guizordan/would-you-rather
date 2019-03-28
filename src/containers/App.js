@@ -29,12 +29,12 @@ class App extends Component {
             <Route path="/" exact component={protect(Home)} />
             <Route path="/login" component={Login} />
 
-            <Route path="/new-question" render={() => <>New Question</>} />
+            {/* <Route path="/new-question" render={() => <>New Question</>} />
             <Route path="/leader-board" render={() => <>Leader Board</>} />
             <Route
               path="/questions/:question_id"
               render={() => <>Question: {this.props.match.question_id}</>}
-            />
+            /> */}
 
             <Redirect from="*" to="/" />
           </Switch>
