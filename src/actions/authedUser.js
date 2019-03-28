@@ -1,4 +1,5 @@
 export const SET_AUTHED_USER = "authedUser/SET";
+export const UNSET_AUTHED_USER = "authedUser/UNSET";
 
 function setAuthedUser(payload) {
   return {
@@ -12,5 +13,11 @@ export function handleSetAuthedUser(payload) {
     const { users } = getState();
     const user = users.find(user => user.id === payload);
     dispatch(setAuthedUser(user));
+  };
+}
+
+export function unsetAuthedUser() {
+  return {
+    type: UNSET_AUTHED_USER,
   };
 }
