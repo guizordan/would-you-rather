@@ -2,14 +2,15 @@ import reducers from "./reducers";
 import middlewares from "./middlewares";
 
 import { createStore } from "redux";
-import { loadState, saveState } from "./localStorage";
+import { loadAuthedUser, saveAuthedUser } from "./localStorage";
 
-const persistedState = loadState();
+const authedUser = loadAuthedUser();
 
-const store = createStore(reducers, persistedState, middlewares);
+const store = createStore(reducers, { authedUser }, middlewares);
 
 store.subscribe(() => {
-  saveState(store.getState());
+  const { authedUser } = store.getState();
+  saveAuthedUser(authedUser);
 });
 
 export default store;
