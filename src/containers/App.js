@@ -8,7 +8,7 @@ import {
 import { connect } from "react-redux";
 import protect from "../hocs/protect";
 
-import Navbar from "../components/Navbar";
+import Bar from "../components/Bar";
 
 import Home from "./Home";
 import Login from "./Login";
@@ -19,27 +19,27 @@ class App extends Component {
     const { authedUser, loadingBar } = this.props;
 
     return (
-      <div
-        className={classNames("container", { invisible: loadingBar.default })}
-      >
-        <Router>
-          {authedUser && <Navbar />}
-
+      <Router>
+        {authedUser && <Bar />}
+        <div
+          className={classNames("container", { invisible: loadingBar.default })}
+        >
           <Switch>
             <Route path="/" exact component={protect(Home)} />
             <Route path="/login" component={Login} />
 
-            {/* <Route path="/new-question" render={() => <>New Question</>} />
-            <Route path="/leader-board" render={() => <>Leader Board</>} />
-            <Route
+            <Route path="/add" render={() => <>New Question</>} />
+            <Route path="/leaderboard" render={() => <>Leader Board</>} />
+
+            {/* <Route
               path="/questions/:question_id"
               render={() => <>Question: {this.props.match.question_id}</>}
             /> */}
 
             <Redirect from="*" to="/" />
           </Switch>
-        </Router>
-      </div>
+        </div>
+      </Router>
     );
   }
 }
