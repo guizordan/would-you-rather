@@ -1,9 +1,9 @@
 import { SET_USERS } from "../actions/users";
 
-export default function(state = [], { type, payload }) {
+export default function(state = null, { type, payload }) {
   switch (type) {
     case SET_USERS:
-      return [...state, ...payload];
+      return { ...state, ...payload };
     default:
       return state;
   }

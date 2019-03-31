@@ -3,17 +3,13 @@ import React from "react";
 import Select from "../components/Select";
 
 import { handleSetAuthedUser } from "../actions/authedUser";
-import { handleGetUsers } from "../actions/users";
+
 import { connect } from "react-redux";
 
 class Login extends React.Component {
   state = {
     user: "",
   };
-
-  componentDidMount() {
-    this.props.handleGetUsers();
-  }
 
   submit = e => {
     e.preventDefault();
@@ -22,6 +18,9 @@ class Login extends React.Component {
   };
 
   render() {
+    const { users } = this.props;
+    const { user } = this.state;
+
     return (
       <>
         <div className="card p-4 text-center">
@@ -31,11 +30,11 @@ class Login extends React.Component {
           </div>
           <div className="form-group">
             <Select
-              placeholder="Choose one"
-              value={this.state.user}
-              label="name"
               id="id"
-              options={this.props.users}
+              label="name"
+              value={user}
+              options={users}
+              placeholder="Choose one"
               onChangeValue={user => this.setState({ user })}
             />
           </div>
@@ -57,5 +56,5 @@ const mapStateToProps = ({ users }) => ({
 
 export default connect(
   mapStateToProps,
-  { handleGetUsers, handleSetAuthedUser },
+  { handleSetAuthedUser },
 )(Login);
