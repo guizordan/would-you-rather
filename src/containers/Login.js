@@ -12,9 +12,10 @@ class Login extends React.Component {
   };
 
   submit = e => {
+    const { handleSetAuthedUser, history } = this.props;
     e.preventDefault();
-    this.props.handleSetAuthedUser(this.state.user);
-    this.props.history.push("/");
+    handleSetAuthedUser(this.state.user);
+    history.push("/");
   };
 
   render() {
@@ -50,9 +51,12 @@ class Login extends React.Component {
     );
   }
 }
-const mapStateToProps = ({ users }) => ({
-  users,
-});
+const mapStateToProps = ({ users }) => {
+  const usersArray = Object.keys(users).map(key => users[key]);
+  return {
+    users: usersArray,
+  };
+};
 
 export default connect(
   mapStateToProps,

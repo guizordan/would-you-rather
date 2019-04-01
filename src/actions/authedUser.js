@@ -8,11 +8,10 @@ function setAuthedUser(payload) {
   };
 }
 
-export function handleSetAuthedUser(payload) {
+export function handleSetAuthedUser(key) {
   return (dispatch, getState) => {
     const { users } = getState();
-    const user = users.find(user => user.id === payload);
-    dispatch(setAuthedUser(user));
+    dispatch(setAuthedUser(users[key]));
   };
 }
 

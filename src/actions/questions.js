@@ -13,33 +13,29 @@ function setAllQuestions(questions) {
 }
 
 function setUnansweredQuestions(questions, authedUser) {
-  const questionVotes = getAllQuestionVotes(questions);
+  return (dispatch, getState) => {
+    const { authedUser, questions } = getState();
 
-  let unanswered = [];
+    const payload = questions.all.filter(
+      question =>
+        !authedUser.questions.some(
+          userQuestion => userQuestion === question.id,
+        ),
+    );
 
-  for (const question of questionVotes) {
-    const voted = question.votes.some(vote => vote === authedUser.id);
-    if (!voted) unanswered = [...unanswered, questions[question.id]];
-  }
-
-  return {
-    type: SET_UNANSWERED,
-    payload: unanswered,
+    dispatch({ type: SET_UNANSWERED, payload });
   };
 }
 
-function setAnsweredQuestions(questions, authedUser) {
-  const questionVotes = getAllQuestionVotes(questions);
+function setAnsweredQuestions() {
+  return (dispatch, getState) => {
+    const { authedUser, questions } = getState();
 
-  let answered = [];
+    const payload = questions.all.filter(question =>
+      authedUser.questions.some(userQuestion => userQuestion === question.id),
+    );
 
-  for (const question of questionVotes) {
-    const voted = question.votes.some(vote => vote === authedUser.id);
-    if (voted) answered = [...answered, questions[question.id]];
-  }
-  return {
-    type: SET_ANSWERED,
-    payload: answered,
+    dispatch({ type: SET_ANSWERED, payload });
   };
 }
 
@@ -49,21 +45,9 @@ export function handleGetQuestions(payload) {
     _getQuestions().then(questions => {
       dispatch(setAllQuestions(questions));
       if (authedUser) {
-        dispatch(setAnsweredQuestions(questions, authedUser));
+        dispatch(setAnsweredQuestions());
         dispatch(setUnansweredQuestions(questions, authedUser));
       }
     });
   };
-}
-
-function getAllQuestionVotes(questions) {
-  return Object.keys(questions).map(key => {
-    return {
-      votes: [
-        ...questions[key].optionOne.votes,
-        ...questions[key].optionTwo.votes,
-      ],
-      id: key,
-    };
-  });
 }

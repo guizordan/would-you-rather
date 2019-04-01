@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { handleGetQuestions } from "../actions/questions";
 import { connect } from "react-redux";
 
-import { Nav } from "react-bootstrap";
+import { Nav, Card, Button } from "react-bootstrap";
 
 class Home extends Component {
   state = {
@@ -13,21 +13,23 @@ class Home extends Component {
     this.props.handleGetQuestions();
   }
 
-  renderUnansweredQuestions = () => {
-    const { questions, users } = this.props;
-    return questions.unanswered.map(question => {
+  renderPolls = questions => {
+    const { users } = this.props;
+    return questions.map(question => {
       return (
-        <div className="card p-3" key={question.id}>
-          {users[question.author].name}
-        </div>
+        <Card key={question.id} className="mb-3">
+          <Card.Header>{users[question.author].name} asked</Card.Header>
+          <Card.Body>
+            <Card.Title>Would you rather...</Card.Title>
+            <Card.Text>{question.optionOne.text} or ...</Card.Text>
+            <Button variant="success" block>
+              View Complete Poll
+            </Button>
+          </Card.Body>
+        </Card>
       );
     });
   };
-
-  renderPolls = () =>
-    this.state.activeTab === "unanswered"
-      ? this.renderUnansweredQuestions()
-      : this.renderUnansweredQuestions();
 
   render() {
     const { activeTab } = this.state;
@@ -49,7 +51,11 @@ class Home extends Component {
             </Nav.Link>
           </Nav.Item>
         </Nav>
-        <div className="pt-2">{this.renderPolls()}</div>
+        <div className="pt-2">
+          {this.state.activeTab === "unanswered"
+            ? this.renderPolls(this.props.unansweredQuestions)
+            : this.renderPolls(this.props.answeredQuestions)}
+        </div>
       </>
     );
   }
@@ -57,7 +63,8 @@ class Home extends Component {
 
 const mapStateToProps = ({ users, questions }) => ({
   users,
-  questions,
+  answeredQuestions: questions.answered,
+  unansweredQuestions: questions.unanswered,
 });
 
 export default connect(
