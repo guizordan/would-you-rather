@@ -13,13 +13,17 @@ import Bar from "../components/Bar";
 
 import Home from "./Home";
 import Login from "./Login";
+import Question from "./Question";
+
 import classNames from "class-names";
 
 import { handleGetUsers } from "../actions/users";
+import { handleGetQuestions } from "../actions/questions";
 
 class App extends Component {
   componentDidMount() {
     this.props.handleGetUsers();
+    this.props.handleGetQuestions();
   }
 
   render() {
@@ -37,15 +41,12 @@ class App extends Component {
             <Switch>
               <Route path="/" exact component={protect(Home)} />
               <Route path="/login" component={Login} />
-
+              <Route
+                path="/questions/:question_id"
+                component={protect(Question)}
+              />
               {/* <Route path="/add" render={() => <>New Question</>} />
           <Route path="/leaderboard" render={() => <>Leader Board</>} /> */}
-
-              {/* <Route
-            path="/questions/:question_id"
-            render={() => <>Question: {this.props.match.question_id}</>}
-          /> */}
-
               <Redirect from="*" to="/" />
             </Switch>
           </div>
@@ -65,5 +66,5 @@ const mapStateToProps = ({ authedUser, users, loadingBar }) => ({
 
 export default connect(
   mapStateToProps,
-  { handleGetUsers },
+  { handleGetUsers, handleGetQuestions },
 )(App);

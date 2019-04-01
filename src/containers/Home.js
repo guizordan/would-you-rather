@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { handleGetQuestions } from "../actions/questions";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { Nav, Card, Button } from "react-bootstrap";
 
@@ -8,10 +9,6 @@ class Home extends Component {
   state = {
     activeTab: "unanswered",
   };
-
-  componentDidMount() {
-    this.props.handleGetQuestions();
-  }
 
   renderPolls = questions => {
     const { users } = this.props;
@@ -22,9 +19,11 @@ class Home extends Component {
           <Card.Body>
             <Card.Title>Would you rather...</Card.Title>
             <Card.Text>{question.optionOne.text} or ...</Card.Text>
-            <Button variant="success" block>
-              View Complete Poll
-            </Button>
+            <Link to={`questions/${question.id}`}>
+              <Button variant="success" block>
+                View Complete Poll
+              </Button>
+            </Link>
           </Card.Body>
         </Card>
       );
@@ -61,11 +60,25 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ({ users, questions }) => ({
-  users,
-  answeredQuestions: questions.answered,
-  unansweredQuestions: questions.unanswered,
-});
+const mapStateToProps = ({ users, authedUser, questions }) => {
+  questions = Object.values(questions);
+
+  const answeredQuestions = questions.filter(question =>
+    authedUser.questions.some(userQuestion => userQuestion === question.id),
+  );
+
+  const unansweredQuestions = questions.filter(
+    question =>
+      !authedUser.questions.some(userQuestion => userQuestion === question.id),
+  );
+
+  return {
+    users,
+    questions,
+    answeredQuestions,
+    unansweredQuestions,
+  };
+};
 
 export default connect(
   mapStateToProps,
