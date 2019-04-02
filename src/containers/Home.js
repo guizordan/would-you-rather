@@ -19,11 +19,7 @@ class Home extends Component {
           <Card.Body>
             <Card.Title>Would you rather...</Card.Title>
             <Card.Text>{question.optionOne.text} or ...</Card.Text>
-            <Link to={`questions/${question.id}`}>
-              <Button variant="success" block>
-                View Complete Poll
-              </Button>
-            </Link>
+            <Link to={`questions/${question.id}`}>View Complete Poll</Link>
           </Card.Body>
         </Card>
       );
