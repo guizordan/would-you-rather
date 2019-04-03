@@ -1,7 +1,6 @@
 export const loadAuthedUser = () => {
   try {
-    const authedUser = localStorage.getItem("authedUser");
-    return JSON.parse(authedUser);
+    return localStorage.getItem("authedUser");
   } catch (err) {
     return null;
   }
@@ -9,9 +8,8 @@ export const loadAuthedUser = () => {
 
 export const saveAuthedUser = user => {
   try {
-    const authedUser = JSON.stringify(user);
-    localStorage.setItem("authedUser", authedUser);
-    return JSON.parse(authedUser);
+    localStorage.setItem("authedUser", user);
+    return user;
   } catch (err) {
     return null;
   }

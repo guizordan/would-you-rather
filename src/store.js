@@ -10,7 +10,7 @@ const store = createStore(reducers, { authedUser }, middlewares);
 
 store.subscribe(() => {
   const { authedUser } = store.getState();
-  saveAuthedUser(authedUser);
+  if (authedUser) saveAuthedUser(authedUser);
 });
 
 export default store;

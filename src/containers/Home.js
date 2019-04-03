@@ -3,7 +3,7 @@ import { handleGetQuestions } from "../actions/questions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { Nav, Card, Button } from "react-bootstrap";
+import { Nav, Card } from "react-bootstrap";
 
 class Home extends Component {
   state = {
@@ -17,8 +17,10 @@ class Home extends Component {
         <Card key={question.id} className="mb-3">
           <Card.Header>{users[question.author].name} asked</Card.Header>
           <Card.Body>
-            <Card.Title>Would you rather...</Card.Title>
-            <Card.Text>{question.optionOne.text} or ...</Card.Text>
+            <Card.Text className="mb-0 font-weight-bold">
+              Would you rather...
+            </Card.Text>
+            <Card.Title>{question.optionOne.text} or ...</Card.Title>
             <Link to={`questions/${question.id}`}>View Complete Poll</Link>
           </Card.Body>
         </Card>
@@ -60,12 +62,16 @@ const mapStateToProps = ({ users, authedUser, questions }) => {
   questions = Object.values(questions);
 
   const answeredQuestions = questions.filter(question =>
-    authedUser.questions.some(userQuestion => userQuestion === question.id),
+    users[authedUser].questions.some(
+      userQuestion => userQuestion === question.id,
+    ),
   );
 
   const unansweredQuestions = questions.filter(
     question =>
-      !authedUser.questions.some(userQuestion => userQuestion === question.id),
+      !users[authedUser].questions.some(
+        userQuestion => userQuestion === question.id,
+      ),
   );
 
   return {

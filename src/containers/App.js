@@ -34,7 +34,7 @@ class App extends Component {
         <Router>
           {authedUser && <Bar />}
           <div
-            className={classNames("container", {
+            className={classNames("container mt-3", {
               invisible: loadingBar.default,
             })}
           >

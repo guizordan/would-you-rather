@@ -4,20 +4,32 @@ import { connect } from "react-redux";
 import { Card, ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import Radio from "../components/Radio";
 
+import { handleSaveQuestionAnswer } from "../actions/questions";
+import Votes from "./Votes";
+
 class Question extends Component {
   state = {
-    selectedOption: "",
+    answer: "",
   };
 
-  selectOption = option => {
-    this.setState({ selectedOption: option });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return { answer: prevState.answer || nextProps.answer };
+  }
+
+  selectAnswer = answer => {
+    this.setState({ answer });
+  };
+
+  vote = () => {
+    const { question, handleSaveQuestionAnswer, history } = this.props;
+    const { answer } = this.state;
+
+    handleSaveQuestionAnswer(question, answer).then(history.push("/"));
   };
 
   render() {
-    const { selectedOption } = this.state;
-    const { questions, users } = this.props;
-    const { question_id } = this.props.match.params;
-    const question = questions[question_id];
+    const { answer } = this.state;
+    const { users, question } = this.props;
 
     if (question) {
       return (
@@ -25,38 +37,59 @@ class Question extends Component {
           <Card className="mb-3">
             <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
             <Card.Header>{users[question.author].name} asked</Card.Header>
-            <Card.Body>
-              <Card.Title>Would You Rather...</Card.Title>
-            </Card.Body>
+            <Card.Body>Would You Rather...</Card.Body>
             <ListGroup className="list-group-flush">
               <ListGroupItem>
                 <Radio
-                  checked={selectedOption}
-                  value="option-one"
-                  onChange={this.selectOption}
-                  label={question.optionOne.text}
+                  checked={answer}
+                  value="optionOne"
+                  onChange={this.selectAnswer}
+                  label={<strong>{question.optionOne.text}</strong>}
                 />
               </ListGroupItem>
               <ListGroupItem>
                 <Radio
-                  checked={selectedOption}
-                  value="option-two"
-                  onChange={this.selectOption}
-                  label={question.optionOne.text}
+                  checked={answer}
+                  value="optionTwo"
+                  onChange={this.selectAnswer}
+                  label={<strong>{question.optionTwo.text}</strong>}
                 />
               </ListGroupItem>
             </ListGroup>
+            <Card.Body>
+              <Button
+                onClick={this.vote}
+                disabled={!answer}
+                variant="success"
+                block
+              >
+                Vote!
+              </Button>
+            </Card.Body>
           </Card>
-          <Button disabled={!selectedOption} variant="success" block>
-            Vote!
-          </Button>
+
+          <Votes className="mb-3" option={question.optionOne} />
+          <Votes className="mb-3" option={question.optionTwo} />
         </>
       );
     }
-
     return <></>;
   }
 }
 
-const mapStateToProps = ({ questions, users }) => ({ questions, users });
-export default connect(mapStateToProps)(Question);
+const mapStateToProps = ({ questions, users, authedUser }, { match }) => {
+  const { question_id } = match.params;
+  const question = questions[question_id];
+  const answer = users[authedUser].answers[question_id] || "";
+
+  return {
+    question,
+    answer,
+    users,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { handleSaveQuestionAnswer },
+)(Question);

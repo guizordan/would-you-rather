@@ -11,7 +11,7 @@ function setAuthedUser(payload) {
 export function handleSetAuthedUser(key) {
   return (dispatch, getState) => {
     const { users } = getState();
-    dispatch(setAuthedUser(users[key]));
+    dispatch(setAuthedUser(users[key].id));
   };
 }
 

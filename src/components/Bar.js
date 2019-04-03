@@ -9,7 +9,7 @@ class Bar extends Component {
   goTo = route => this.props.history.replace(route);
 
   render() {
-    const { authedUser, unsetAuthedUser } = this.props;
+    const { authedUser, unsetAuthedUser, users } = this.props;
 
     return (
       <Navbar bg="light" expand="lg">
@@ -25,7 +25,7 @@ class Bar extends Component {
           </Nav>
           <Nav className="ml-auto">
             <NavDropdown
-              title={`Welcome, ${authedUser.name}!`}
+              title={`Welcome, ${users[authedUser].name}!`}
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item onClick={unsetAuthedUser}>
@@ -39,8 +39,9 @@ class Bar extends Component {
   }
 }
 
-const mapStateToProps = ({ authedUser }) => ({
+const mapStateToProps = ({ authedUser, users }) => ({
   authedUser,
+  users,
 });
 
 export default connect(
