@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Card, ListGroup, ListGroupItem, Button } from "react-bootstrap";
+import { Card, ListGroup, ListGroupItem, Button, Alert } from "react-bootstrap";
 import Radio from "../components/Radio";
 
 import { handleSaveQuestionAnswer } from "../actions/questions";
@@ -10,10 +10,16 @@ import Votes from "./Votes";
 class Question extends Component {
   state = {
     answer: "",
+    showAlert: false,
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return { answer: prevState.answer || nextProps.answer };
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   console.log(prevState);
+  //   return { ...prevState, answer: prevState.answer || nextProps.answer };
+  // }
+
+  componentDidUpdate() {
+    console.log("up");
   }
 
   selectAnswer = answer => {
@@ -21,19 +27,26 @@ class Question extends Component {
   };
 
   vote = () => {
-    const { question, handleSaveQuestionAnswer, history } = this.props;
+    const { question, handleSaveQuestionAnswer } = this.props;
     const { answer } = this.state;
 
-    handleSaveQuestionAnswer(question, answer).then(history.push("/"));
+    handleSaveQuestionAnswer(question, answer).then(() => {
+      this.setState({ showAlert: true });
+    });
   };
 
   render() {
-    const { answer } = this.state;
+    const { answer, showAlert } = this.state;
     const { users, question } = this.props;
 
     if (question) {
       return (
         <>
+          {showAlert && (
+            <Alert variant="success">
+              Thank you for sharing your opinion with us!
+            </Alert>
+          )}
           <Card className="mb-3">
             <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
             <Card.Header>{users[question.author].name} asked</Card.Header>
@@ -81,6 +94,7 @@ const mapStateToProps = ({ questions, users, authedUser }, { match }) => {
   const { question_id } = match.params;
   const question = questions[question_id];
   const answer = users[authedUser].answers[question_id] || "";
+  console.log("oi");
 
   return {
     question,
