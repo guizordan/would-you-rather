@@ -1,35 +1,20 @@
 import React, { Component } from "react";
 import { handleGetQuestions } from "../actions/questions";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-
-import { Nav, Card } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
+import PollList from "./PollList";
 
 class Home extends Component {
   state = {
     activeTab: "unanswered",
   };
 
-  renderPolls = questions => {
-    const { users } = this.props;
-    return questions.map(question => {
-      return (
-        <Card key={question.id} className="mb-3">
-          <Card.Header>{users[question.author].name} asked</Card.Header>
-          <Card.Body>
-            <Card.Text className="mb-0 font-weight-bold">
-              Would you rather...
-            </Card.Text>
-            <Card.Title>{question.optionOne.text} or ...</Card.Title>
-            <Link to={`questions/${question.id}`}>View Complete Poll</Link>
-          </Card.Body>
-        </Card>
-      );
-    });
-  };
-
   render() {
     const { activeTab } = this.state;
+    const { answeredQuestions, unansweredQuestions } = this.props;
+    const questions =
+      activeTab === "unanswered" ? unansweredQuestions : answeredQuestions;
+
     return (
       <>
         <Nav
@@ -49,9 +34,7 @@ class Home extends Component {
           </Nav.Item>
         </Nav>
         <div className="pt-2">
-          {this.state.activeTab === "unanswered"
-            ? this.renderPolls(this.props.unansweredQuestions)
-            : this.renderPolls(this.props.answeredQuestions)}
+          <PollList questions={questions} />
         </div>
       </>
     );
@@ -61,17 +44,12 @@ class Home extends Component {
 const mapStateToProps = ({ users, authedUser, questions }) => {
   questions = Object.values(questions);
 
-  const answeredQuestions = questions.filter(question =>
-    users[authedUser].questions.some(
-      userQuestion => userQuestion === question.id,
-    ),
+  const answeredQuestions = questions.filter(
+    question => users[authedUser].answers[question.id],
   );
 
   const unansweredQuestions = questions.filter(
-    question =>
-      !users[authedUser].questions.some(
-        userQuestion => userQuestion === question.id,
-      ),
+    question => !users[authedUser].answers[question.id],
   );
 
   return {
