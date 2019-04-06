@@ -21,7 +21,9 @@ store.subscribe(() => {
 });
 
 history.listen(() => {
-  store.dispatch({ type: UNSET_MESSAGES });
+  const { messages } = store.getState();
+  const someMessage = Object.values(messages).some(message => message);
+  if (someMessage) store.dispatch({ type: UNSET_MESSAGES });
 });
 
 ReactDOM.render(

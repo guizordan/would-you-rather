@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Card, Button, Alert, Form } from "react-bootstrap";
 
 import { handleSaveQuestion } from "../actions/questions";
-import { Link } from "react-router-dom";
 
 class Question extends Component {
   state = {
@@ -22,15 +21,13 @@ class Question extends Component {
 
   render() {
     const { question, optionOneText, optionTwoText } = this.state;
+    const { messages } = this.props;
     const submitDisabled = !question || !optionOneText || !optionTwoText;
 
     return (
       <>
-        {this.props.answer && (
-          <Alert variant="success">
-            Thank you for sharing your opinion with us!{" "}
-            <Link to="/"> Back to home</Link>
-          </Alert>
+        {messages.saveQuestionError && (
+          <Alert variant="danger">{messages.saveQuestionError}</Alert>
         )}
         <Card className="mb-3">
           <Card.Header>Create a new Poll</Card.Header>
@@ -83,7 +80,9 @@ class Question extends Component {
   }
 }
 
+const mapStateToProps = ({ messages }) => ({ messages });
+
 export default connect(
-  null,
+  mapStateToProps,
   { handleSaveQuestion },
 )(Question);

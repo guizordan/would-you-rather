@@ -1,2 +1,9 @@
-export const UNSET_MESSAGES = "messages/UNSET";
-export const SAVE_QUESTION_SUCCESS = "messages/SAVE_QUESTION_SUCCESS";
+export const UNSET_MESSAGES = "@@messages/UNSET";
+
+export const SAVE_QUESTION_SUCCESS = "@@messages/SAVE_QUESTION_SUCCESS";
+export const SAVE_QUESTION_ERROR = "@@messages/SAVE_QUESTION_ERROR";
+
+export const SAVE_QUESTION_ANSWER_SUCCESS =
+  "@@messages/SAVE_QUESTION_ANSWER_SUCCESS";
+export const SAVE_QUESTION_ANSWER_ERROR =
+  "@@messages/SAVE_QUESTION_ANSWER_ERROR";

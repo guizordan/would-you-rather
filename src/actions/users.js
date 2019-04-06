@@ -1,7 +1,7 @@
 import { _getUsers } from "../_DATA";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 
-export const SET_USERS = "users/SET";
+export const SET_USERS = "@@users/SET";
 
 export function setUsers(payload) {
   return {

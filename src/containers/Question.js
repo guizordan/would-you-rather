@@ -37,19 +37,23 @@ class NewQuestion extends Component {
   };
 
   render() {
-    const { users, question } = this.props;
+    const { users, question, messages } = this.props;
     const submitDisabled =
       !this.state.answer || this.state.answer === this.props.answer;
 
     if (question) {
       return (
         <>
-          {this.props.answer && (
+          {messages.saveQuestionAnswerSuccess && (
             <Alert variant="success">
-              Thank you for sharing your opinion with us!{" "}
+              {messages.saveQuestionAnswerSuccess}
               <Link to="/"> Back to home</Link>
             </Alert>
           )}
+          {messages.saveQuestionAnswerError && (
+            <Alert variant="danger">{messages.saveQuestionAnswerError}</Alert>
+          )}
+
           <Card className="mb-3">
             <Form onSubmit={this.vote}>
               <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
@@ -95,7 +99,10 @@ class NewQuestion extends Component {
   }
 }
 
-const mapStateToProps = ({ questions, users, authedUser }, { match }) => {
+const mapStateToProps = (
+  { questions, users, authedUser, messages },
+  { match },
+) => {
   const { question_id } = match.params;
   const question = questions[question_id];
   const answer = users[authedUser].answers[question_id] || "";
@@ -104,6 +111,7 @@ const mapStateToProps = ({ questions, users, authedUser }, { match }) => {
     question,
     answer,
     users,
+    messages,
   };
 };
 
