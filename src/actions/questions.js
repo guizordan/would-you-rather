@@ -3,12 +3,25 @@ import { _saveQuestionAnswer, _saveQuestion } from "../_DATA";
 import { setUsers } from "./users";
 import { push } from "connected-react-router";
 
+import { SAVE_QUESTION_SUCCESS } from "./messages";
+
 export const SET = "questions/SET";
 
 function setQuestions(payload) {
   return {
     type: SET,
     payload,
+  };
+}
+
+function saveQuestionSuccess(payload) {
+  return (dispatch, getState) => {
+    dispatch(setQuestions(payload));
+    dispatch(push("/"));
+    dispatch({
+      type: SAVE_QUESTION_SUCCESS,
+      payload: "Question saved successfuly!",
+    });
   };
 }
 
@@ -22,11 +35,11 @@ export function handleGetQuestions(payload) {
 
 export function handleSaveQuestion(question) {
   return (dispatch, getState) => {
-    dispatch(push("/"));
     const { authedUser } = getState();
 
     _saveQuestion({ ...question, author: authedUser }).then(question => {
-      dispatch(setQuestions({ [question.id]: { ...question } }));
+      const payload = { [question.id]: { ...question } };
+      dispatch(saveQuestionSuccess(payload));
     });
   };
 }

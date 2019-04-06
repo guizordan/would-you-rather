@@ -2,13 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./index.scss";
-import { push } from "connected-react-router";
 import { Provider } from "react-redux";
-import configureStore from "./store";
+import configureStore, { history } from "./store";
 import { loadAuthedUser, saveAuthedUser } from "./localStorage";
 
 import App from "./containers/App";
 import LoadingBar from "react-redux-loading-bar";
+
+import { UNSET_MESSAGES } from "./actions/messages";
 
 const authedUser = loadAuthedUser();
 
@@ -19,7 +20,9 @@ store.subscribe(() => {
   if (authedUser) saveAuthedUser(authedUser);
 });
 
-store.dispatch(push("/add"));
+history.listen(() => {
+  store.dispatch({ type: UNSET_MESSAGES });
+});
 
 ReactDOM.render(
   <Provider store={store}>

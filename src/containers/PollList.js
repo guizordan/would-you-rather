@@ -6,13 +6,13 @@ import { Card } from "react-bootstrap";
 
 class PollList extends PureComponent {
   static propTypes = {
-    questions: PropTypes.array.isRequired,
+    polls: PropTypes.array.isRequired,
   };
 
   render() {
-    const { users, questions } = this.props;
+    const { users, polls } = this.props;
 
-    return questions.map(question => {
+    return polls.map(question => {
       return (
         <Card key={question.id} className="mb-3">
           <Card.Header>{users[question.author].name} asked</Card.Header>

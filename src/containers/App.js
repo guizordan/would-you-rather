@@ -1,23 +1,24 @@
 import React, { Component } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-
-import { ConnectedRouter } from "connected-react-router";
-
 import { connect } from "react-redux";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { ConnectedRouter } from "connected-react-router";
+import { history } from "../store";
+
+import classNames from "class-names";
+
 import protect from "../hocs/protect";
 
 import Bar from "../components/Bar";
 
+/* Routes */
 import Home from "./Home";
 import Login from "./Login";
 import Question from "./Question";
-
-import classNames from "class-names";
+import NewQuestion from "./NewQuestion";
+/* Routes */
 
 import { handleGetUsers } from "../actions/users";
 import { handleGetQuestions } from "../actions/questions";
-import NewQuestion from "./NewQuestion";
-import { history } from "../store";
 
 class App extends Component {
   componentDidMount() {

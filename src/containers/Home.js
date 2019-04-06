@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { handleGetQuestions } from "../actions/questions";
 import { connect } from "react-redux";
-import { Nav } from "react-bootstrap";
+import { Nav, Alert } from "react-bootstrap";
 import PollList from "./PollList";
 
 class Home extends Component {
@@ -11,12 +11,15 @@ class Home extends Component {
 
   render() {
     const { activeTab } = this.state;
-    const { answeredQuestions, unansweredQuestions } = this.props;
-    const questions =
+    const { answeredQuestions, unansweredQuestions, messages } = this.props;
+    const polls =
       activeTab === "unanswered" ? unansweredQuestions : answeredQuestions;
 
     return (
       <>
+        {messages.saveQuestionSuccess && (
+          <Alert variant="success">{messages.saveQuestionSuccess}</Alert>
+        )}
         <Nav
           fill
           variant="tabs"
@@ -34,14 +37,14 @@ class Home extends Component {
           </Nav.Item>
         </Nav>
         <div className="pt-2">
-          <PollList questions={questions} />
+          <PollList polls={polls} />
         </div>
       </>
     );
   }
 }
 
-const mapStateToProps = ({ users, authedUser, questions }) => {
+const mapStateToProps = ({ users, authedUser, questions, messages }) => {
   questions = Object.values(questions);
 
   const answeredQuestions = questions.filter(
@@ -57,6 +60,7 @@ const mapStateToProps = ({ users, authedUser, questions }) => {
     questions,
     answeredQuestions,
     unansweredQuestions,
+    messages,
   };
 };
 
