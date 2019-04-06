@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
+
+import { ConnectedRouter } from "connected-react-router";
 
 import { connect } from "react-redux";
 import protect from "../hocs/protect";
@@ -20,6 +17,7 @@ import classNames from "class-names";
 import { handleGetUsers } from "../actions/users";
 import { handleGetQuestions } from "../actions/questions";
 import NewQuestion from "./NewQuestion";
+import { history } from "../store";
 
 class App extends Component {
   componentDidMount() {
@@ -32,7 +30,7 @@ class App extends Component {
 
     if (users) {
       return (
-        <Router>
+        <ConnectedRouter history={history}>
           {authedUser && <Bar />}
           <div
             className={classNames("container mt-3", {
@@ -52,7 +50,7 @@ class App extends Component {
               <Redirect from="*" to="/" />
             </Switch>
           </div>
-        </Router>
+        </ConnectedRouter>
       );
     }
 

@@ -1,16 +1,20 @@
-import reducers from "./reducers";
-import middlewares from "./middlewares";
+import createRootReducer from "./reducers";
 
 import { createStore } from "redux";
-import { loadAuthedUser, saveAuthedUser } from "./localStorage";
+import { applyMiddleware } from "redux";
+import { createBrowserHistory } from "history";
+import { routerMiddleware } from "connected-react-router";
 
-const authedUser = loadAuthedUser();
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
 
-const store = createStore(reducers, { authedUser }, middlewares);
+export const history = createBrowserHistory();
 
-store.subscribe(() => {
-  const { authedUser } = store.getState();
-  if (authedUser) saveAuthedUser(authedUser);
-});
-
-export default store;
+export default function configureStore(preloadedState) {
+  const store = createStore(
+    createRootReducer(history),
+    preloadedState,
+    composeWithDevTools(applyMiddleware(routerMiddleware(history), thunk)),
+  );
+  return store;
+}

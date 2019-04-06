@@ -1,6 +1,7 @@
 import { _getQuestions } from "../_DATA";
 import { _saveQuestionAnswer, _saveQuestion } from "../_DATA";
 import { setUsers } from "./users";
+import { push } from "connected-react-router";
 
 export const SET = "questions/SET";
 
@@ -21,6 +22,7 @@ export function handleGetQuestions(payload) {
 
 export function handleSaveQuestion(question) {
   return (dispatch, getState) => {
+    dispatch(push("/"));
     const { authedUser } = getState();
 
     _saveQuestion({ ...question, author: authedUser }).then(question => {
