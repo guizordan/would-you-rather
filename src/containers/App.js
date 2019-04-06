@@ -19,6 +19,7 @@ import classNames from "class-names";
 
 import { handleGetUsers } from "../actions/users";
 import { handleGetQuestions } from "../actions/questions";
+import NewQuestion from "./NewQuestion";
 
 class App extends Component {
   componentDidMount() {
@@ -45,8 +46,9 @@ class App extends Component {
                 path="/questions/:question_id"
                 component={protect(Question)}
               />
-              {/* <Route path="/add" render={() => <>New Question</>} />
-          <Route path="/leaderboard" render={() => <>Leader Board</>} /> */}
+              <Route path="/add" component={protect(NewQuestion)} />
+
+              {/* <Route path="/leaderboard" render={() => <>Leader Board</>} /> */}
               <Redirect from="*" to="/" />
             </Switch>
           </div>

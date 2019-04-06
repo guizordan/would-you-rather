@@ -8,8 +8,6 @@ const protect = Component => props => {
 
   if (!authedUser) return <Redirect to="/login" />;
 
-  console.log("dae");
-
   return <Component {...rest} />;
 };
 

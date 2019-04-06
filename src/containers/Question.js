@@ -1,20 +1,27 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { Card, ListGroup, ListGroupItem, Button, Alert } from "react-bootstrap";
+import {
+  Card,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Alert,
+  Form,
+} from "react-bootstrap";
 import Radio from "../components/Radio";
 
 import { handleSaveQuestionAnswer } from "../actions/questions";
 import Votes from "./Votes";
 import { Link } from "react-router-dom";
 
-class Question extends Component {
+class NewQuestion extends Component {
   state = {
     answer: "",
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return { ...prevState, answer: prevState.answer || nextProps.answer };
+    return { answer: prevState.answer || nextProps.answer };
   }
 
   selectAnswer = answer => {
@@ -31,6 +38,8 @@ class Question extends Component {
 
   render() {
     const { users, question } = this.props;
+    const submitDisabled =
+      !this.state.answer || this.state.answer === this.props.answer;
 
     if (question) {
       return (
@@ -42,7 +51,7 @@ class Question extends Component {
             </Alert>
           )}
           <Card className="mb-3">
-            <form onSubmit={this.vote}>
+            <Form onSubmit={this.vote}>
               <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
               <Card.Header>{users[question.author].name} asked</Card.Header>
               <Card.Body>Would You Rather...</Card.Body>
@@ -66,10 +75,7 @@ class Question extends Component {
               </ListGroup>
               <Card.Body>
                 <Button
-                  disabled={
-                    !this.state.answer ||
-                    this.state.answer === this.props.answer
-                  }
+                  disabled={submitDisabled}
                   variant="success"
                   type="submit"
                   block
@@ -77,7 +83,7 @@ class Question extends Component {
                   {(this.props.answer && "Change vote") || "Vote!"}
                 </Button>
               </Card.Body>
-            </form>
+            </Form>
           </Card>
 
           <Votes className="mb-3" option={question.optionOne} />
@@ -104,4 +110,4 @@ const mapStateToProps = ({ questions, users, authedUser }, { match }) => {
 export default connect(
   mapStateToProps,
   { handleSaveQuestionAnswer },
-)(Question);
+)(NewQuestion);

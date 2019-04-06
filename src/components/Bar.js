@@ -1,21 +1,37 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { unsetAuthedUser } from "../actions/authedUser";
 
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 
 class Bar extends Component {
-  goTo = route => this.props.history.replace(route);
+  state = {
+    expanded: false,
+  };
+
+  goTo = route => {
+    this.setState({ expanded: false }, this.props.history.replace(route));
+  };
 
   render() {
     const { authedUser, unsetAuthedUser, users } = this.props;
+    const { expanded } = this.state;
 
     return (
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand onClick={() => this.goTo("/")}>WYR?</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
+      <Navbar
+        expanded={expanded}
+        onToggle={() => this.setState({ expanded: !expanded })}
+        expand="lg"
+        bg="dark"
+        variant="dark"
+      >
+        <Link to="/">
+          <Navbar.Brand>WYR?</Navbar.Brand>
+        </Link>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link onClick={() => this.goTo("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => this.goTo("/add")}>New Question</Nav.Link>
