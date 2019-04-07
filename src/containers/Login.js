@@ -5,55 +5,62 @@ import Select from "../components/Select";
 import { handleSetAuthedUser } from "../actions/authedUser";
 
 import { connect } from "react-redux";
+import { Button, Card } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 
 class Login extends React.Component {
   state = {
-    user: "",
+    selectedUser: "",
   };
 
-  submit = e => {
-    const { handleSetAuthedUser, history } = this.props;
+  enter = e => {
     e.preventDefault();
-    handleSetAuthedUser(this.state.user);
-    history.push("/");
+    const { handleSetAuthedUser, location } = this.props;
+    const { selectedUser } = this.state;
+    handleSetAuthedUser(selectedUser, location.state.referrer);
   };
 
   render() {
-    const { users } = this.props;
-    const { user } = this.state;
+    const { users, authedUser } = this.props;
+    const { selectedUser } = this.state;
+    if (authedUser) return <Redirect to="/" />;
 
     return (
-      <>
-        <div className="card p-4 text-center">
-          <div>
-            <h4>Welcome!</h4>
-            <p className="text-muted">Select a user to begin.</p>
-          </div>
-          <div className="form-group">
-            <Select
-              id="id"
-              label="name"
-              value={user}
-              options={users}
-              placeholder="Choose one"
-              onChangeValue={user => this.setState({ user })}
-            />
-          </div>
-          <button
-            className="btn btn-primary btn-block"
-            type="submit"
-            onClick={this.submit}
-          >
-            Enter
-          </button>
-        </div>
-      </>
+      <form onSubmit={this.enter}>
+        <Card className="text-center">
+          <Card.Body>
+            <div>
+              <h4>Welcome!</h4>
+              <p className="text-muted">Select a user to begin.</p>
+            </div>
+            <div className="form-group">
+              <Select
+                id="id"
+                label="name"
+                value={selectedUser}
+                options={users}
+                placeholder="Choose one"
+                onChangeValue={selectedUser => this.setState({ selectedUser })}
+              />
+            </div>
+            <Button
+              block
+              type="submit"
+              variant="primary"
+              disabled={!selectedUser}
+            >
+              Enter
+            </Button>
+          </Card.Body>
+        </Card>
+      </form>
     );
   }
 }
-const mapStateToProps = ({ users }) => {
+const mapStateToProps = ({ users, authedUser }) => {
   return {
     users: Object.values(users),
+    authedUser,
   };
 };
 

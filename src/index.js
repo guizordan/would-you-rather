@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import { Provider } from "react-redux";
 import configureStore, { history } from "./store";
-import { loadAuthedUser, saveAuthedUser } from "./localStorage";
+import { loadAuthedUser } from "./localStorage";
 
 import App from "./containers/App";
 import LoadingBar from "react-redux-loading-bar";
@@ -15,12 +15,7 @@ const authedUser = loadAuthedUser();
 
 const store = configureStore({ authedUser });
 
-store.subscribe(() => {
-  const { authedUser } = store.getState();
-  if (authedUser) saveAuthedUser(authedUser);
-});
-
-history.listen(() => {
+history.listen(location => {
   const { messages } = store.getState();
   const someMessage = Object.values(messages).some(message => message);
   if (someMessage) store.dispatch({ type: UNSET_MESSAGES });

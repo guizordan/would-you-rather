@@ -6,7 +6,15 @@ import { Redirect } from "react-router-dom";
 const protect = Component => props => {
   const { authedUser, ...rest } = props;
 
-  if (!authedUser) return <Redirect to="/login" />;
+  if (!authedUser)
+    return (
+      <Redirect
+        to={{
+          pathname: "/login",
+          state: { referrer: props.location.pathname },
+        }}
+      />
+    );
 
   return <Component {...rest} />;
 };
