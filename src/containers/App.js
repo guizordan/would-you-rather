@@ -23,41 +23,38 @@ import { handleGetQuestions } from "../actions/questions";
 
 class App extends Component {
   componentDidMount() {
-    this.props.handleGetUsers();
-    this.props.handleGetQuestions();
+    const { handleGetUsers, handleGetQuestions } = this.props;
+    handleGetUsers();
+    handleGetQuestions();
   }
 
   render() {
-    const { authedUser, users, loadingBar } = this.props;
+    const { loadingBar } = this.props;
 
-    if (users) {
-      return (
-        <ConnectedRouter history={history}>
-          {authedUser && <Bar />}
-          <div
-            className={classNames("container mt-3", {
-              invisible: loadingBar.default,
-            })}
-          >
-            <Switch>
-              <Route path="/" exact component={protect(Home)} />
-              <Route path="/login" component={Login} />
-              <Route
-                path="/questions/:question_id"
-                component={protect(Question)}
-              />
-              <Route path="/add" component={protect(NewQuestion)} />
+    return (
+      <ConnectedRouter history={history}>
+        <Bar />
+        <div
+          className={classNames("container mt-3", {
+            invisible: loadingBar.default > 0,
+          })}
+        >
+          <Switch>
+            <Route path="/" exact component={protect(Home)} />
+            <Route path="/login" component={Login} />
+            <Route
+              path="/questions/:question_id"
+              component={protect(Question)}
+            />
+            <Route path="/add" component={protect(NewQuestion)} />
 
-              {/* <Route path="/leaderboard" render={() => <>Leader Board</>} /> */}
-              <Route path="/404" component={NotFound} />
-              <Redirect from="*" to="/" />
-            </Switch>
-          </div>
-        </ConnectedRouter>
-      );
-    }
-
-    return "";
+            {/* <Route path="/leaderboard" render={() => <>Leader Board</>} /> */}
+            <Route path="/404" component={NotFound} />
+            <Redirect from="*" to="/" />
+          </Switch>
+        </div>
+      </ConnectedRouter>
+    );
   }
 }
 

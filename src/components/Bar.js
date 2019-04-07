@@ -16,8 +16,10 @@ class Bar extends Component {
   };
 
   render() {
-    const { authedUser, handleUnsetAuthedUser, users } = this.props;
+    let { authedUser, handleUnsetAuthedUser, users } = this.props;
     const { expanded } = this.state;
+    authedUser = users[authedUser];
+    if (!authedUser) return "";
 
     return (
       <Navbar
@@ -41,7 +43,7 @@ class Bar extends Component {
           </Nav>
           <Nav className="ml-auto">
             <NavDropdown
-              title={`Welcome, ${users[authedUser].name}!`}
+              title={`Welcome, ${authedUser.name}!`}
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item onClick={handleUnsetAuthedUser}>

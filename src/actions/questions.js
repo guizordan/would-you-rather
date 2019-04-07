@@ -2,6 +2,7 @@ import { _getQuestions } from "../_DATA";
 import { _saveQuestionAnswer, _saveQuestion } from "../_DATA";
 import { setUsers } from "./users";
 import { push } from "connected-react-router";
+import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 import {
   SAVE_QUESTION_SUCCESS,
@@ -14,14 +15,18 @@ export const SET = "@@questions/SET";
 
 /* Action Creators */
 function setQuestions(payload) {
-  return {
-    type: SET,
-    payload,
+  return dispatch => {
+    dispatch(hideLoading());
+    dispatch({
+      type: SET,
+      payload,
+    });
   };
 }
 
 function saveQuestionSuccess(payload) {
   return dispatch => {
+    dispatch(hideLoading());
     dispatch(setQuestions(payload));
     dispatch(push("/"));
     dispatch({
@@ -33,6 +38,7 @@ function saveQuestionSuccess(payload) {
 
 function saveQuestionError() {
   return dispatch => {
+    dispatch(hideLoading());
     dispatch({
       type: SAVE_QUESTION_ERROR,
       message: "Oops! Something went wrong :( Please, try again later!",
@@ -62,6 +68,8 @@ function saveQuestionAnswerError() {
 /* Thunks */
 export function handleGetQuestions() {
   return (dispatch, getState) => {
+    dispatch(showLoading());
+
     _getQuestions().then(questions => {
       dispatch(setQuestions(questions));
     });
@@ -70,6 +78,7 @@ export function handleGetQuestions() {
 
 export function handleSaveQuestion(question) {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     const { authedUser } = getState();
 
     _saveQuestion({ ...question, author: authedUser })
@@ -83,6 +92,7 @@ export function handleSaveQuestion(question) {
 
 export function handleSaveQuestionAnswer(question, answer) {
   return (dispatch, getState) => {
+    dispatch(showLoading());
     const { authedUser } = getState();
     let { users } = getState();
 
