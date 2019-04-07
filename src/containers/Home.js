@@ -47,13 +47,13 @@ class Home extends Component {
 const mapStateToProps = ({ users, authedUser, questions, messages }) => {
   questions = Object.values(questions);
 
-  const answeredQuestions = questions.filter(
-    question => users[authedUser].answers[question.id],
-  );
+  const answeredQuestions = questions
+    .filter(question => users[authedUser].answers[question.id])
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-  const unansweredQuestions = questions.filter(
-    question => !users[authedUser].answers[question.id],
-  );
+  const unansweredQuestions = questions
+    .filter(question => !users[authedUser].answers[question.id])
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   return {
     users,

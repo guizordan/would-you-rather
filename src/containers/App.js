@@ -15,6 +15,7 @@ import Home from "./Home";
 import Login from "./Login";
 import Question from "./Question";
 import NewQuestion from "./NewQuestion";
+import NotFound from "../components/NotFound";
 /* Routes */
 
 import { handleGetUsers } from "../actions/users";
@@ -48,6 +49,7 @@ class App extends Component {
               <Route path="/add" component={protect(NewQuestion)} />
 
               {/* <Route path="/leaderboard" render={() => <>Leader Board</>} /> */}
+              <Route path="/404" component={NotFound} />
               <Redirect from="*" to="/" />
             </Switch>
           </div>

@@ -7,10 +7,7 @@ export const loadAuthedUser = () => {
 };
 
 export const saveAuthedUser = user => {
-  try {
-    localStorage.setItem("authedUser", user);
-    return user;
-  } catch (err) {
-    return null;
-  }
+  if (user) localStorage.setItem("authedUser", user);
 };
+
+export const removeAuthedUser = () => localStorage.removeItem("authedUser");

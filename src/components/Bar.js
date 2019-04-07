@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { unsetAuthedUser } from "../actions/authedUser";
+import { handleUnsetAuthedUser } from "../actions/authedUser";
 
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 
@@ -16,7 +16,7 @@ class Bar extends Component {
   };
 
   render() {
-    const { authedUser, unsetAuthedUser, users } = this.props;
+    const { authedUser, handleUnsetAuthedUser, users } = this.props;
     const { expanded } = this.state;
 
     return (
@@ -44,7 +44,7 @@ class Bar extends Component {
               title={`Welcome, ${users[authedUser].name}!`}
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item onClick={unsetAuthedUser}>
+              <NavDropdown.Item onClick={handleUnsetAuthedUser}>
                 Exit
               </NavDropdown.Item>
             </NavDropdown>
@@ -62,5 +62,5 @@ const mapStateToProps = ({ authedUser, users }) => ({
 
 export default connect(
   mapStateToProps,
-  { unsetAuthedUser },
+  { handleUnsetAuthedUser },
 )(withRouter(Bar));

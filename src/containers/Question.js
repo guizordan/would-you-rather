@@ -13,7 +13,7 @@ import Radio from "../components/Radio";
 
 import { handleSaveQuestionAnswer } from "../actions/questions";
 import Votes from "./Votes";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 class NewQuestion extends Component {
   state = {
@@ -95,7 +95,7 @@ class NewQuestion extends Component {
         </>
       );
     }
-    return <></>;
+    return <Redirect to="/404" />;
   }
 }
 
