@@ -7,20 +7,20 @@ export const UNSET_AUTHED_USER = "@@authedUser/UNSET";
 
 function setAuthedUser(payload) {
   return dispatch => {
-    dispatch(hideLoading());
-    return {
+    dispatch({
       type: SET_AUTHED_USER,
       payload,
-    };
+    });
+    dispatch(hideLoading());
   };
 }
 
 function unsetAuthedUser() {
   return dispatch => {
-    dispatch(hideLoading());
-    return {
+    dispatch({
       type: UNSET_AUTHED_USER,
-    };
+    });
+    dispatch(hideLoading());
   };
 }
 

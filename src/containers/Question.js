@@ -24,9 +24,7 @@ class NewQuestion extends Component {
     return { answer: prevState.answer || nextProps.answer };
   }
 
-  selectAnswer = answer => {
-    this.setState({ answer });
-  };
+  selectAnswer = answer => this.setState({ answer });
 
   vote = e => {
     e.preventDefault();
@@ -41,61 +39,59 @@ class NewQuestion extends Component {
     const submitDisabled =
       !this.state.answer || this.state.answer === this.props.answer;
 
-    if (question) {
-      return (
-        <>
-          {messages.saveQuestionAnswerSuccess && (
-            <Alert variant="success">
-              {messages.saveQuestionAnswerSuccess}
-              <Link to="/"> Back to home</Link>
-            </Alert>
-          )}
-          {messages.saveQuestionAnswerError && (
-            <Alert variant="danger">{messages.saveQuestionAnswerError}</Alert>
-          )}
+    if (!question) return <Redirect to="/404" />;
+    return (
+      <>
+        {messages.saveQuestionAnswerSuccess && (
+          <Alert variant="success">
+            {messages.saveQuestionAnswerSuccess}
+            <Link to="/"> Back to home</Link>
+          </Alert>
+        )}
+        {messages.saveQuestionAnswerError && (
+          <Alert variant="danger">{messages.saveQuestionAnswerError}</Alert>
+        )}
 
-          <Card className="mb-3">
-            <Form onSubmit={this.vote}>
-              <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
-              <Card.Header>{users[question.author].name} asked</Card.Header>
-              <Card.Body>Would You Rather...</Card.Body>
-              <ListGroup className="list-group-flush">
-                <ListGroupItem>
-                  <Radio
-                    checked={this.state.answer}
-                    value="optionOne"
-                    onChange={this.selectAnswer}
-                    label={<strong>{question.optionOne.text}</strong>}
-                  />
-                </ListGroupItem>
-                <ListGroupItem>
-                  <Radio
-                    checked={this.state.answer}
-                    value="optionTwo"
-                    onChange={this.selectAnswer}
-                    label={<strong>{question.optionTwo.text}</strong>}
-                  />
-                </ListGroupItem>
-              </ListGroup>
-              <Card.Body>
-                <Button
-                  disabled={submitDisabled}
-                  variant="success"
-                  type="submit"
-                  block
-                >
-                  {(this.props.answer && "Change vote") || "Vote!"}
-                </Button>
-              </Card.Body>
-            </Form>
-          </Card>
+        <Card className="mb-3">
+          <Form onSubmit={this.vote}>
+            <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+            <Card.Header>{users[question.author].name} asked</Card.Header>
+            <Card.Body>Would You Rather...</Card.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>
+                <Radio
+                  checked={this.state.answer}
+                  value="optionOne"
+                  onChange={this.selectAnswer}
+                  label={<strong>{question.optionOne.text}</strong>}
+                />
+              </ListGroupItem>
+              <ListGroupItem>
+                <Radio
+                  checked={this.state.answer}
+                  value="optionTwo"
+                  onChange={this.selectAnswer}
+                  label={<strong>{question.optionTwo.text}</strong>}
+                />
+              </ListGroupItem>
+            </ListGroup>
+            <Card.Body>
+              <Button
+                disabled={submitDisabled}
+                variant="success"
+                type="submit"
+                block
+              >
+                {(this.props.answer && "Change vote") || "Vote!"}
+              </Button>
+            </Card.Body>
+          </Form>
+        </Card>
 
-          <Votes className="mb-3" option={question.optionOne} />
-          <Votes className="mb-3" option={question.optionTwo} />
-        </>
-      );
-    }
-    return <Redirect to="/404" />;
+        <Votes className="mb-3" option={question.optionOne} />
+        <Votes className="mb-3" option={question.optionTwo} />
+      </>
+    );
   }
 }
 
@@ -103,9 +99,10 @@ const mapStateToProps = (
   { questions, users, authedUser, messages },
   { match },
 ) => {
+  let answer = "";
   const { question_id } = match.params;
   const question = questions[question_id];
-  const answer = users[authedUser].answers[question_id] || "";
+  answer = users[authedUser].answers[question_id];
 
   return {
     question,

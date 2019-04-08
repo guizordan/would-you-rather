@@ -3,3 +3,13 @@
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
+
+.bg-loading {
+  background-color: black;
+  left: 0px;
+  top: 3px;
+  opacity: 0.7;
+  width: 100vh;
+  height: 100vh;
+  position: fixed;
+}

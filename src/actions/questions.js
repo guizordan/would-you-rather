@@ -16,33 +16,33 @@ export const SET = "@@questions/SET";
 /* Action Creators */
 function setQuestions(payload) {
   return dispatch => {
-    dispatch(hideLoading());
     dispatch({
       type: SET,
       payload,
     });
+    dispatch(hideLoading());
   };
 }
 
 function saveQuestionSuccess(payload) {
   return dispatch => {
-    dispatch(hideLoading());
     dispatch(setQuestions(payload));
     dispatch(push("/"));
     dispatch({
       type: SAVE_QUESTION_SUCCESS,
       message: "Question saved successfuly!",
     });
+    dispatch(hideLoading());
   };
 }
 
 function saveQuestionError() {
   return dispatch => {
-    dispatch(hideLoading());
     dispatch({
       type: SAVE_QUESTION_ERROR,
       message: "Oops! Something went wrong :( Please, try again later!",
     });
+    dispatch(hideLoading());
   };
 }
 

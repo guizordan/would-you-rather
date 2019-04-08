@@ -11,14 +11,12 @@ class Bar extends Component {
     expanded: false,
   };
 
-  goTo = route => {
+  goTo = route =>
     this.setState({ expanded: false }, this.props.history.replace(route));
-  };
 
   render() {
-    let { authedUser, handleUnsetAuthedUser, users } = this.props;
+    const { authedUser, handleUnsetAuthedUser, users } = this.props;
     const { expanded } = this.state;
-    authedUser = users[authedUser];
     if (!authedUser) return "";
 
     return (
@@ -43,7 +41,7 @@ class Bar extends Component {
           </Nav>
           <Nav className="ml-auto">
             <NavDropdown
-              title={`Welcome, ${authedUser.name}!`}
+              title={`Welcome, ${users[authedUser].name}!`}
               id="basic-nav-dropdown"
             >
               <NavDropdown.Item onClick={handleUnsetAuthedUser}>
