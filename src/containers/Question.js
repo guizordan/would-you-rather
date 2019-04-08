@@ -54,27 +54,37 @@ class NewQuestion extends Component {
 
         <Card className="mb-3">
           <Form onSubmit={this.vote}>
-            <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
             <Card.Header>{users[question.author].name} asked</Card.Header>
-            <Card.Body>Would You Rather...</Card.Body>
-            <ListGroup className="list-group-flush">
-              <ListGroupItem>
-                <Radio
-                  checked={this.state.answer}
-                  value="optionOne"
-                  onChange={this.selectAnswer}
-                  label={<strong>{question.optionOne.text}</strong>}
+            <div className="row no-gutters">
+              <div className="col-sm-4">
+                <img
+                  alt={users[question.author].name}
+                  src={users[question.author].avatarURL}
+                  style={{ width: "100%", height: "300px" }}
                 />
-              </ListGroupItem>
-              <ListGroupItem>
-                <Radio
-                  checked={this.state.answer}
-                  value="optionTwo"
-                  onChange={this.selectAnswer}
-                  label={<strong>{question.optionTwo.text}</strong>}
-                />
-              </ListGroupItem>
-            </ListGroup>
+              </div>
+              <div className="col-sm-8">
+                <Card.Body>Would You Rather...</Card.Body>
+                <ListGroup className="list-group-flush">
+                  <ListGroupItem>
+                    <Radio
+                      checked={this.state.answer}
+                      value="optionOne"
+                      onChange={this.selectAnswer}
+                      label={<strong>{question.optionOne.text}</strong>}
+                    />
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    <Radio
+                      checked={this.state.answer}
+                      value="optionTwo"
+                      onChange={this.selectAnswer}
+                      label={<strong>{question.optionTwo.text}</strong>}
+                    />
+                  </ListGroupItem>
+                </ListGroup>
+              </div>
+            </div>
             <Card.Body>
               <Button
                 disabled={submitDisabled}
