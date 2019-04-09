@@ -8,7 +8,7 @@ import {
   SAVE_QUESTION_SUCCESS,
   SAVE_QUESTION_ERROR,
   SAVE_QUESTION_ANSWER_SUCCESS,
-  SAVE_QUESTION_ANSWER_ERROR,
+  SAVE_QUESTION_ANSWER_ERROR
 } from "./messages";
 
 export const SET = "@@questions/SET";
@@ -18,19 +18,20 @@ function setQuestions(payload) {
   return dispatch => {
     dispatch({
       type: SET,
-      payload,
+      payload
     });
     dispatch(hideLoading());
   };
 }
 
-function saveQuestionSuccess(payload) {
+function saveQuestionSuccess(questions, users) {
   return dispatch => {
-    dispatch(setQuestions(payload));
+    dispatch(setUsers(users));
+    dispatch(setQuestions(questions));
     dispatch(push("/"));
     dispatch({
       type: SAVE_QUESTION_SUCCESS,
-      message: "Question saved successfuly!",
+      message: "Question saved successfuly!"
     });
     dispatch(hideLoading());
   };
@@ -40,7 +41,7 @@ function saveQuestionError() {
   return dispatch => {
     dispatch({
       type: SAVE_QUESTION_ERROR,
-      message: "Oops! Something went wrong :( Please, try again later!",
+      message: "Oops! Something went wrong :( Please, try again later!"
     });
     dispatch(hideLoading());
   };
@@ -52,7 +53,7 @@ function saveQuestionAnswerSuccess(users, question) {
     dispatch(setQuestions(question));
     dispatch({
       type: SAVE_QUESTION_ANSWER_SUCCESS,
-      message: "Thank you for sharing your opinion with us!",
+      message: "Thank you for sharing your opinion with us!"
     });
   };
 }
@@ -60,7 +61,7 @@ function saveQuestionAnswerSuccess(users, question) {
 function saveQuestionAnswerError() {
   return {
     type: SAVE_QUESTION_ANSWER_ERROR,
-    message: "Oops! Something went wrong :( Please, try again later!",
+    message: "Oops! Something went wrong :( Please, try again later!"
   };
 }
 /* Action Creators */
@@ -80,11 +81,21 @@ export function handleSaveQuestion(question) {
   return (dispatch, getState) => {
     dispatch(showLoading());
     const { authedUser } = getState();
+    let { users } = getState();
 
     _saveQuestion({ ...question, author: authedUser })
       .then(question => {
-        const payload = { [question.id]: { ...question } };
-        dispatch(saveQuestionSuccess(payload));
+        users = {
+          ...users,
+          [authedUser]: {
+            ...users[authedUser],
+            questions: [...users[authedUser].questions, question.id]
+          }
+        };
+
+        question = { [question.id]: { ...question } };
+
+        dispatch(saveQuestionSuccess(question, users));
       })
       .catch(() => dispatch(saveQuestionError()));
   };
@@ -99,7 +110,7 @@ export function handleSaveQuestionAnswer(question, answer) {
     const questionAnswer = {
       authedUser: authedUser,
       qid: question.id,
-      answer,
+      answer
     };
 
     _saveQuestionAnswer(questionAnswer)
@@ -111,18 +122,18 @@ export function handleSaveQuestionAnswer(question, answer) {
             ...users[authedUser],
             answers: {
               ...users[authedUser].answers,
-              [question.id]: answer,
-            },
-          },
+              [question.id]: answer
+            }
+          }
         };
         /* Updates the authedUser's answers */
 
         /* Removes the user vote (if exists) from both options */
         question.optionOne.votes = question.optionOne.votes.filter(
-          user => user !== authedUser,
+          user => user !== authedUser
         );
         question.optionTwo.votes = question.optionTwo.votes.filter(
-          user => user !== authedUser,
+          user => user !== authedUser
         );
         /* Removes the user vote (if exists) from both options */
 
@@ -132,9 +143,9 @@ export function handleSaveQuestionAnswer(question, answer) {
             ...question,
             [answer]: {
               ...question[answer],
-              votes: [...new Set([...question[answer].votes, authedUser])],
-            },
-          },
+              votes: [...new Set([...question[answer].votes, authedUser])]
+            }
+          }
         };
         /* Updates the question's votes without duplicating */
         dispatch(saveQuestionAnswerSuccess(users, question));

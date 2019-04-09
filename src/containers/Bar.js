@@ -11,7 +11,7 @@ import { Navbar, Nav, NavDropdown } from "react-bootstrap";
  */
 class Bar extends Component {
   state = {
-    expanded: false,
+    expanded: false
   };
 
   goTo = route =>
@@ -47,7 +47,12 @@ class Bar extends Component {
               title={`Welcome, ${users[authedUser].name}!`}
               id="basic-nav-dropdown"
             >
-              <NavDropdown.Item onClick={handleUnsetAuthedUser}>
+              <NavDropdown.Item
+                onClick={() => {
+                  this.setState({ expanded: false });
+                  handleUnsetAuthedUser();
+                }}
+              >
                 Exit
               </NavDropdown.Item>
             </NavDropdown>
@@ -60,10 +65,10 @@ class Bar extends Component {
 
 const mapStateToProps = ({ authedUser, users }) => ({
   authedUser,
-  users,
+  users
 });
 
 export default connect(
   mapStateToProps,
-  { handleUnsetAuthedUser },
+  { handleUnsetAuthedUser }
 )(withRouter(Bar));

@@ -3,11 +3,6 @@ import { connect } from "react-redux";
 import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 
 class Leaderboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     const { leaderboard } = this.props;
     return (
@@ -46,12 +41,12 @@ const mapStateToProps = ({ questions, users }) => {
     (a, b) =>
       Object.keys(b.answers).length +
       b.questions.length -
-      (Object.keys(a.answers).length + a.questions.length),
+      (Object.keys(a.answers).length + a.questions.length)
   );
 
   return {
     questions,
-    leaderboard,
+    leaderboard
   };
 };
 
