@@ -7,7 +7,7 @@ import {
   ListGroupItem,
   Button,
   Alert,
-  Form,
+  Form
 } from "react-bootstrap";
 import Radio from "../components/Radio";
 
@@ -17,7 +17,7 @@ import { Link, Redirect } from "react-router-dom";
 
 class NewQuestion extends Component {
   state = {
-    answer: "",
+    answer: ""
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -99,8 +99,7 @@ class NewQuestion extends Component {
           </Form>
         </Card>
 
-        <Votes className="mb-3" option={question.optionOne} />
-        <Votes className="mb-3" option={question.optionTwo} />
+        <Votes className="mb-3" question={question} />
       </>
     );
   }
@@ -108,7 +107,7 @@ class NewQuestion extends Component {
 
 const mapStateToProps = (
   { questions, users, authedUser, messages },
-  { match },
+  { match }
 ) => {
   let answer = "";
   const { question_id } = match.params;
@@ -119,11 +118,11 @@ const mapStateToProps = (
     question,
     answer,
     users,
-    messages,
+    messages
   };
 };
 
 export default connect(
   mapStateToProps,
-  { handleSaveQuestionAnswer },
+  { handleSaveQuestionAnswer }
 )(NewQuestion);
