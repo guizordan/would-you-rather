@@ -40,6 +40,7 @@ class NewQuestion extends Component {
       !this.state.answer || this.state.answer === this.props.answer;
 
     if (!question) return <Redirect to="/404" />;
+
     return (
       <>
         {messages.saveQuestionAnswerSuccess && (
@@ -48,6 +49,7 @@ class NewQuestion extends Component {
             <Link to="/"> Back to home</Link>
           </Alert>
         )}
+
         {messages.saveQuestionAnswerError && (
           <Alert variant="danger">{messages.saveQuestionAnswerError}</Alert>
         )}
@@ -56,14 +58,13 @@ class NewQuestion extends Component {
           <Form onSubmit={this.vote}>
             <Card.Header>{users[question.author].name} asked</Card.Header>
             <div className="row no-gutters">
-              <div className="col-sm-4">
+              <div style={{ width: "300px", height: "300px" }}>
                 <img
                   alt={users[question.author].name}
                   src={users[question.author].avatarURL}
-                  style={{ width: "100%", height: "300px" }}
                 />
               </div>
-              <div className="col-sm-8">
+              <div className="col">
                 <Card.Body>Would You Rather...</Card.Body>
                 <ListGroup className="list-group-flush">
                   <ListGroupItem>

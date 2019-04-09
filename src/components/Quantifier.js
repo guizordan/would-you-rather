@@ -1,6 +1,9 @@
 import { PureComponent } from "react";
 import PropTypes from "prop-types";
 
+/**
+ * @description returns a plural or singular word depending on the quantity
+ */
 export default class Quantifier extends PureComponent {
   static propTypes = {
     quantity: PropTypes.number.isRequired,

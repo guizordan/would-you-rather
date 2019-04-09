@@ -3,6 +3,9 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+/**
+ * @description prevents an unidentified user from accessing some component
+ */
 const protect = Component => props => {
   const { authedUser, ...rest } = props;
 

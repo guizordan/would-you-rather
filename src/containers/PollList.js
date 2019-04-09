@@ -11,6 +11,12 @@ class PollList extends PureComponent {
 
   render() {
     const { users, polls } = this.props;
+    if (polls.length === 0)
+      return (
+        <div className="text-center mt-2">
+          No polls available in this category.
+        </div>
+      );
 
     return polls.map(question => {
       return (

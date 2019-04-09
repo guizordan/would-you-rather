@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function NotFound(props) {
+/**
+ * @description 404 page
+ */
+export default function NotFound() {
   return (
     <>
       <div className="row">

@@ -6,6 +6,9 @@ import { handleUnsetAuthedUser } from "../actions/authedUser";
 
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 
+/**
+ * @description Application's navigation bar
+ */
 class Bar extends Component {
   state = {
     expanded: false,

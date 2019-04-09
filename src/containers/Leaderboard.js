@@ -16,8 +16,8 @@ class Leaderboard extends Component {
           return (
             <Card
               key={user.id}
-              style={{ maxWidth: "300px" }}
-              className="col ml-2 mr-2 mb-3"
+              style={{ width: "300px" }}
+              className="ml-2 mr-2 mb-3"
             >
               <Card.Body>
                 <strong>{index + 1}º </strong>

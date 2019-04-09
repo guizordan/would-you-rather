@@ -6,7 +6,7 @@ import { history } from "../store";
 
 import protect from "../hocs/protect";
 
-import Bar from "../components/Bar";
+import Bar from "../containers/Bar";
 
 /* Routes */
 import Home from "./Home";

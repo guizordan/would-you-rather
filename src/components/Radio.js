@@ -1,7 +1,11 @@
 import React from "react";
 import { Form } from "react-bootstrap";
+import { PropTypes } from "prop-types";
 
-export default props => {
+/**
+ * @description A Radio button
+ */
+const Radio = props => {
   const { value, label, checked } = props;
 
   const onChange = e => {
@@ -21,3 +25,12 @@ export default props => {
     />
   );
 };
+
+Radio.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  checked: PropTypes.string,
+  label: PropTypes.any,
+};
+
+export default Radio;
