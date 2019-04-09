@@ -1,5 +1,5 @@
 import { push } from "connected-react-router";
-import { removeAuthedUser, saveAuthedUser } from "../localStorage";
+// import { removeAuthedUser, saveAuthedUser } from "../localStorage";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 
 export const SET_AUTHED_USER = "@@authedUser/SET";
@@ -9,7 +9,7 @@ function setAuthedUser(payload) {
   return dispatch => {
     dispatch({
       type: SET_AUTHED_USER,
-      payload,
+      payload
     });
     dispatch(hideLoading());
   };
@@ -18,7 +18,7 @@ function setAuthedUser(payload) {
 function unsetAuthedUser() {
   return dispatch => {
     dispatch({
-      type: UNSET_AUTHED_USER,
+      type: UNSET_AUTHED_USER
     });
     dispatch(hideLoading());
   };
@@ -27,7 +27,7 @@ function unsetAuthedUser() {
 export function handleSetAuthedUser(authedUser, referrer = "/") {
   return (dispatch, getState) => {
     dispatch(showLoading());
-    saveAuthedUser(authedUser);
+    // saveAuthedUser(authedUser);
     dispatch(setAuthedUser(authedUser));
     dispatch(push(referrer));
   };
@@ -36,7 +36,7 @@ export function handleSetAuthedUser(authedUser, referrer = "/") {
 export function handleUnsetAuthedUser() {
   return dispatch => {
     dispatch(showLoading());
-    removeAuthedUser();
+    // removeAuthedUser();
     dispatch(unsetAuthedUser());
   };
 }

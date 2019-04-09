@@ -19,5 +19,5 @@ I've added some extra content to make my project stand out, such as
 - A messaging system using a [messages reducer](/src/reducers/messages.js)
 - A connected-router to dispatch route changes
 - A Loading System
-- Local Storage to preserve the authed user's session across page reloads
+- Local Storage to preserve the authed user's session across page reloads _*removed to meet project specification*_
 - The [protect HOC](/src/hocs/protect.js) to prevent unidentified users from accessing protected components
